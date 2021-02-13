@@ -19,6 +19,7 @@ jobs:
       matrix:
         platform:
           - linux/arm64
+          - linux/amd64
     steps:
       - name: Checkout project
         uses: actions/checkout@v2
