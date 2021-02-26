@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   app:
-    image: eddwills95/umbrui:main
+    image: umbrui/umbrui:main
     # Allows building on the Pi easily
     # build: 
     #   context: ./umbrui
@@ -18,9 +18,9 @@ services:
       - BITCOIN_RPC_PORT=${BITCOIN_RPC_PORT}
       - LND_IP=${LND_IP}
       - LND_GRPC_PORT=${LND_GRPC_PORT}
-      - USE_REGTEST=True
+      - BTC_NETWORK=${BITCOIN_NETWORK}
   screen:
-    image: eddwills95/umbrui-renderer:main
+    image: umbrui/umbrui-renderer:main
     volumes:
       - ${APP_DATA_DIR}/screenshots:/usr/screenshots
     devices:
