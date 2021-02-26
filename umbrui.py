@@ -58,7 +58,10 @@ class UmbrUI():
     # Get/refresh all elements that can be updated
     def load_updatable_elements(self):
         # Remove all old elements
-        self.screen.fill(background_color, (0, 100, screen_size))
+        self.screen.fill(background_color)
+        self.add_logo_and_text()
+        self.add_qr_code()
+        self.build_info_section("admin", get_ip(), (520, 120), False, True)
 
         sync_status = self.btc_rpc.get_sync_progress()
 
