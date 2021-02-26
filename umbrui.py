@@ -58,7 +58,7 @@ class UmbrUI():
     # Get/refresh all elements that can be updated
     def load_updatable_elements(self):
         # Remove all old elements
-        self.screen.fill(color, (0, 100, screen_size))
+        self.screen.fill(background_color, (0, 100, screen_size))
 
         sync_status = self.btc_rpc.get_sync_progress()
 
