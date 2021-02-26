@@ -33,7 +33,7 @@ class LndGRPC:
         return stub
 
     def _get_macaroon(self):
-        f = open('./lnd/data/chain/bitcoin/' + os.getenv("BTC_NETWORK") + 'regtest/admin.macaroon', 'rb')
+        f = open('./lnd/data/chain/bitcoin/' + os.getenv("BTC_NETWORK") + '/admin.macaroon', 'rb')
         macaroon_bytes = f.read()
         macaroon = codecs.encode(macaroon_bytes, 'hex')
         return macaroon
