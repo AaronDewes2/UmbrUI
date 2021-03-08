@@ -1,16 +1,21 @@
-version: "3.9"
+version: "3.7"
+x-logging:
+  &default-logging
+  driver: journald
+  options:
+    tag: "umbrel-app {{.Name}}"
+
 services:
   app:
     image: umbrui/umbrui:main
+    stop_grace_period: 10s
     # Allows building on the Pi easily
     # build: 
     #   context: ./umbrui
     volumes:
       - ${APP_DATA_DIR}/screenshots:/usr/screenshots
-      - ${APP_DATA_DIR}/../../tor/data/web/hostname:/usr/tor_hostname
-      - ${APP_DATA_DIR}/data.json:/data.json
+      - ${APP_DATA_DIR}/data.json:/usr/data.json
       - ${LND_DATA_DIR}:/app/lnd:ro
-    network_mode: host
     environment:
       - BITCOIN_IP=${BITCOIN_IP}
       - BITCOIN_RPC_USER=${BITCOIN_RPC_USER}
@@ -23,6 +28,7 @@ services:
     image: umbrui/umbrui-renderer:main
     volumes:
       - ${APP_DATA_DIR}/screenshots:/usr/screenshots
+      - ${APP_DATA_DIR}/data.json:/usr/data.json
     devices:
       - "/dev/gpiomem:/dev/gpiomem"
       - "/dev/spidev0.0:/dev/spidev0.0"
@@ -30,32 +36,31 @@ services:
     depends_on:
       - app
   api:
-    container_name: web
+    container_name: api
     image: umbrui/api:main
     logging: *default-logging
     restart: on-failure
-    stop_grace_period: 5m30s
-    stop_signal: SIGINT
+    stop_grace_period: 10s
     volumes:
       - ${APP_DATA_DIR}/data.json:/app/data.json
     networks:
         default:
             ipv4_address: 10.21.21.30
-  web:
-    container_name: web
+  designer:
+    container_name: designer
     image: umbrui/designer:main
     logging: *default-logging
     restart: on-failure
-    stop_grace_period: 5m30s
-    stop_signal: SIGINT
+    stop_grace_period: 10s
+    depends_on: [ api ]
     networks:
         default:
             ipv4_address: 10.21.21.31
   nginx:
-    container_name: nginx
+    container_name: umbrui_nginx
     image: nginx:1.19
     logging: *default-logging
-    depends_on: [ web, api ]
+    depends_on: [ designer, api ]
     volumes:
             - ${APP_DATA_DIR}/nginx:/etc/nginx
     restart: on-failure

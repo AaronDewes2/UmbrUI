@@ -5,7 +5,7 @@ import pygame
 import pygame.freetype
 
 # Consts
-from consts import screen_size, black, umbrel_blue, progress_background, background_color, bold_font, light_font, columns_x, rows_y, screenshot_location
+from consts import screen_size, black, umbrel_blue, progress_background, background_color, bold_font, light_font, columns_x, rows_y, screenshot_location, displayed_columns
 
 # Local libraries
 from lib.network import get_ip
@@ -81,13 +81,13 @@ class UmbrUI():
 
             for element in userData["displayedElements"]:
                 # Not more than we can get onto the screen (4 rows)
-                if(row != 3):
+                if(row != 2):
                     try:
                         elementData = eval("sectionsList." +
                                             element + "(sectionsList)").getData()
                         # elementData[0]: title
                         # elementData[1]: Displayed data
-                        # elementData[2]: Element gets it's own row if set to True
+                        # elementData[2]: Element width
                         # elementData[3]: Custom text font
                         if(elementData[2] and column != 0):
                             row = row + 1
@@ -95,7 +95,7 @@ class UmbrUI():
                         self.build_info_section(
                             elementData[0], elementData[1], (columns_x[column], rows_y[row]), elementData[3])
                         column = column + 1
-                        if(column == 3 or elementData[2]):
+                        if(column == displayed_columns or (elementData[2] > (displayed_columns - column)):
                             row = row + 1
                             column = 0
                     # Ignore non-existing elements
@@ -114,7 +114,7 @@ class UmbrUI():
         umbrelImg = pygame.transform.scale(umbrelImg, (88, 100))
 
         self.screen.blit(umbrelImg, (16, 16))
-        self.screen.blit(title_surf, (110, 50))
+        self.screen.blit(title_surf, (130, 50))
 
     def add_qr_code(self):
         qrImg = generate_qr_code(get_ip())

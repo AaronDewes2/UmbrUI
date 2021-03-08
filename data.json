@@ -1,6 +1,5 @@
 {
     "displayedElements": [
-        "torURL",
         "activeChannels",
         "forward",
         "maxReceive",

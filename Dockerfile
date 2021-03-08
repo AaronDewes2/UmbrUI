@@ -1,4 +1,4 @@
-FROM umbrui/python-grpc:v1.36.0-pre1
+FROM umbrui/python-grpc:v1.36.0
 
 RUN apt-get update && apt-get install -y libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libfreetype6-dev libjpeg-dev libportmidi-dev gcc g++ make && \
     pip3 install pypng pygame pyqrcode python-bitcoinrpc && \ 

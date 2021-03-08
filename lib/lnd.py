@@ -1,23 +1,12 @@
 import grpc
 import codecs
 import os
-#from time import sleep
+from time import sleep
 
 import lib.rpc_pb2 as lnrpc
 import lib.rpc_pb2_grpc as rpc_stub
 
 from lib.utils import human_format
-
-# def check_lnd():
-# try:
-#     stub = get_stub()
-#     metadata = [('macaroon',get_macaroon())]
-#     response = stub.GetInfo(lnrpc.GetInfoRequest(),metadata=metadata)
-#     response.num_active_channels
-# except grpc._channel._InactiveRpcError:
-#     sleep(2)
-#     check_lnd()
-
 
 class LndGRPC:
     def __init__(self):
@@ -79,3 +68,11 @@ class LndGRPC:
         except:
             sats = "0"
         return sats + " Sats"
+
+    def check_lnd():
+    try:
+        response = self.stub.GetInfo(lnrpc.GetInfoRequest(),metadata=metadata)
+        response.num_active_channels
+    except grpc._channel._InactiveRpcError:
+        sleep(2)
+        self.check_lnd()

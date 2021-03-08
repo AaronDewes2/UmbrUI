@@ -1,6 +1,7 @@
 import socket
 
-
+# Disabled host network access
+'''
 def get_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
@@ -11,8 +12,13 @@ def get_ip():
     finally:
         s.close()
     return IP
+'''
 
+def get_ip():
+    return "http://umbrel.local"
 
+'''
 def get_tor_address():
     address = open("/usr/tor_hostname", "r")
     return address.read()
+'''
